@@ -1,0 +1,22 @@
+/target
+/lib
+/classes
+/checkouts
+pom.xml
+*.jar
+*.class
+.lein-deps-sum
+.lein-failures
+.lein-plugins
+.lein-git-deps
+.lein-repl-history
+.nrepl-port
+.cpcache
+.calva
+
+## auto-generated
+out
+resources/*/sites/*/public/js/main.js
+.clj-kondo
+.lsp
+.lein-env
