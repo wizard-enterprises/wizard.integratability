@@ -1,7 +1,8 @@
 (ns wizard.integratability.integratability-test
   (:use wizard.toolbelt.test.midje wizard.toolbelt)
   (:require [clojure.string :as str]
-            [wizard.integratability :as intg]))
+            [wizard.integratability :as intg]
+            [wizard.contextual-resolution :as ctx]))
 
 (facts
   "about counter integrations"
@@ -14,7 +15,7 @@
          [{:type :inc :data {:z 100}}
           (fn [_ _ x] (update x :n + 10000))
           {:type :inc :data {:z 200}}]}]
-    (:n (intg/resolve-integrations counter 10 {:y 1}))
+    (:n (intg/resolve-integrations-on counter 10 {:y 1}))
     => 11322))
 
 (defn- append-inc
@@ -36,7 +37,7 @@
          :integrations
          [append-inc
           {:type :inc :data {:times 0}}]}]
-    (:n (intg/resolve-integrations counter)) => 150))
+    (:n (intg/resolve-integrations-on counter)) => 150))
 
 (fact
  "incremental integration"
@@ -53,4 +54,45 @@
         :integrations
         [{:type :inc-n
           :data {:up-to 50}}]}]
-   (:n (intg/resolve-integrations counter)) => 50))
+   (:n (intg/resolve-integrations-on counter)) => 50))
+
+(fact
+ "resolving integrated results in context"
+ (let [ctx {:y 3 :z 5
+            :thing
+            {:x 2
+             :available-integrations
+             {'do
+              (fn [y thing {}]
+                (ctx/exfer :z #(update thing :x * y %)))}
+             :integrations
+             [{:type :do}
+              (fn [y thing]
+                (ctx/exfer :z #(update thing :x * y %)))]}}]
+   (:x (intg/resolve-integrations-in ctx :thing :y)) => 450))
+
+(fact
+  "integrating informativally throughout context"
+  (let [ctx {:y 2
+             :thing
+             {:x 3
+              :available-integrations
+              {'do
+               (fn [y thing {:keys [zz]}]
+                 (ctx/inform
+                  {:z 5 :zz zz :zzz 9}
+                  :z
+                  (fn [z]
+                    (update thing :x * y z))))}
+              :integrations
+              [{:type :do :data {:zz 999}}
+               (fn [y thing]
+                 (ctx/inform
+                  {:zz 9}
+                  :zz :zzz
+                  (fn [zz zzz]
+                    (assoc thing :z (* zz zzz)))))]}}
+        {:keys [ctx resolved]}
+        (intg/resolve-integrations-throughout ctx :thing :y)]
+    resolved => (contains {:x 30 :z 81})
+    ctx => (just {:y 2 :z 5 :thing (contains {:x 30 :z 81}) :zz 9 :zzz 9})))
