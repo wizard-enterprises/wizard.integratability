@@ -8,7 +8,7 @@
   :git-dependencies
   [["https://github.com/wizard-enterprises/wizard.toolbelt.git" "main"]
    ["https://github.com/wizard-enterprises/wizard.toolbelt.test.git" "main"]
-   ["https://github.com/wizard-enterprises/wizard.contextual-resolution.git" "main"]]
+   ["https://github.com/wizard-enterprises/wizard.contextually.git" "main"]]
   :dependencies [[org.clojure/clojure "1.11.1"]
                  [org.clojure/clojurescript "1.11.132"]
                  ;; [tupelo "24.06.21-SNAPSHOT"]

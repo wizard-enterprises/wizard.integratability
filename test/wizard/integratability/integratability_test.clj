@@ -2,7 +2,7 @@
   (:use wizard.toolbelt.test.midje wizard.toolbelt)
   (:require [clojure.string :as str]
             [wizard.integratability :as intg]
-            [wizard.contextual-resolution :as ctx]))
+            [wizard.contextually :as ctx]))
 
 (facts
   "about counter integrations"

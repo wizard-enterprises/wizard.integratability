@@ -1,6 +1,6 @@
 (ns wizard.integratability
   (:use wizard.toolbelt)
-  (:require [wizard.contextual-resolution :as ctx]))
+  (:require [wizard.contextually :as ctx]))
 
 (defn append-intg
   [thing & intgs]
