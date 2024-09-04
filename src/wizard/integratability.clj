@@ -2,13 +2,21 @@
   (:use wizard.toolbelt)
   (:require [wizard.contextually :as ctx]))
 
+(defn- with-intgs
+  [thing]
+  (if (contains? thing :integrations)
+    thing
+    (assoc thing :integrations [])))
+
 (defn append-intg
   [thing & intgs]
-  (apply update thing :integrations append intgs))
+  (apply update (with-intgs thing)
+         :integrations append intgs))
 
 (defn prepend-intg
   [thing & intgs]
-  (update thing :integrations #(apply prepend (append intgs %))))
+  (update (with-intgs thing)
+          :integrations #(apply prepend (append intgs %))))
 
 (defn find-intg
   [thing intg-type]

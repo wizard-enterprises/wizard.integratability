@@ -5,6 +5,12 @@
             [wizard.contextually :as ctx]))
 
 (facts
+ "about adding integrations"
+ (let [intg (fn [x] x)]
+   (intg/append-intg {} intg) => {:integrations [intg]}
+   (intg/prepend-intg {} intg) => {:integrations [intg]}))
+
+(facts
   "about counter integrations"
   (let [counter
         {:n 1000
