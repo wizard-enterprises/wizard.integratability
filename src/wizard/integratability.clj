@@ -65,7 +65,7 @@
               ctx-args    (map #(ctx-resolve ctx %) (or ctx-args []))
               integrated  (apply resolve-integration-on
                                  ctx thing integration ctx-args)
-              {:keys [ctx resolved]}
+              [ctx resolved]
               (ctx/resolve-throughout ctx integrated)]
           (recur ctx resolved))))))
 
