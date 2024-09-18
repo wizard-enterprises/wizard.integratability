@@ -1,0 +1,10 @@
+{:deps
+ {org.clojure/clojure     {:mvn/version "1.12.0"}
+  hub/wizard.toolbelt     {:local/root "../wizard.toolbelt"}
+  hub/wizard.contextually {:local/root "../wizard.contextually"}}
+ :aliases
+ {:test
+  {:extra-paths ["test"]
+   :extra-deps
+   {hub/wizard.toolbelt.test {:local/root "../wizard.toolbelt.test"}}
+   :main-opts   ["-m" "kaocha.runner"]}}}

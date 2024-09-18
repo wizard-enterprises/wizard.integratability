@@ -1,1 +1,6 @@
 * wizard.integratability
+** Useful commands
+- ~clj -X:deps git-resolve-tags~ :: Update =deps.edn= with the latest
+  versions from GitHub
+- ~clj -M:test~ :: Run the tests (add the ~--watch~ flag to rerun on
+  file changes)
